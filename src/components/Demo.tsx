@@ -36,21 +36,33 @@ export const Demo = () => {
 
     setIsAnalyzing(true);
     
-    // Simulate AI analysis
+    // Simulate AI analysis with enhanced features
     setTimeout(() => {
       setResult({
-        quality: "Fresh",
-        confidence: 96.8,
-        defects: "None detected",
-        ripeness: "Optimal",
-        recommendation: "Ready for market distribution"
+        quality: "Grade A",
+        ripeness: "85% Ripe",
+        consumptionDays: 3,
+        externalQuality: {
+          color: "Excellent - Uniform golden yellow",
+          texture: "Good - Smooth with minor blemishes",
+          size: "Medium - 150g",
+          appearance: "95% Quality Score"
+        },
+        internalQuality: {
+          firmness: "Optimal - 7.5/10",
+          sugarContent: "High - 14° Brix",
+          moisture: "Good - 85%",
+          freshness: "92% Quality Score"
+        },
+        ripeningTime: "12-18 hours until peak ripeness",
+        recommendation: "Ready for consumption within 2-3 days. Store at room temperature."
       });
       setIsAnalyzing(false);
       toast({
         title: "Analysis Complete",
-        description: "Fruit quality has been assessed successfully"
+        description: "Comprehensive fruit quality assessment completed!"
       });
-    }, 2000);
+    }, 2500);
   };
 
   return (
@@ -115,31 +127,83 @@ export const Demo = () => {
               <h3 className="text-xl font-semibold mb-4">Analysis Results</h3>
               
               {result ? (
-                <div className="space-y-4">
+                <div className="space-y-4 max-h-[600px] overflow-y-auto pr-2">
+                  {/* Consumption Timeline */}
                   <div className="p-4 rounded-lg bg-primary/10 border border-primary/20">
-                    <div className="flex justify-between items-center mb-2">
-                      <span className="text-sm font-medium">Quality Status</span>
-                      <span className="text-2xl font-bold text-primary">{result.quality}</span>
-                    </div>
-                    <div className="text-sm text-muted-foreground">
-                      Confidence: {result.confidence}%
+                    <div className="text-sm font-medium mb-1">Consumption Timeline</div>
+                    <div className="text-3xl font-bold text-primary">{result.consumptionDays} Days</div>
+                    <div className="text-xs text-muted-foreground">Optimal consumption window</div>
+                  </div>
+
+                  {/* Ripening Time */}
+                  <div className="p-4 rounded-lg bg-secondary/10 border border-secondary/20">
+                    <div className="text-sm font-medium mb-1">Ripening Time</div>
+                    <div className="text-sm font-semibold">{result.ripeningTime}</div>
+                  </div>
+
+                  {/* External Quality Detection */}
+                  <div className="p-4 rounded-lg border border-border">
+                    <div className="text-sm font-semibold mb-3">External Quality Detection</div>
+                    <div className="space-y-2 text-xs">
+                      <div className="flex justify-between">
+                        <span className="text-muted-foreground">Color:</span>
+                        <span className="font-medium text-right ml-2">{result.externalQuality.color}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-muted-foreground">Texture:</span>
+                        <span className="font-medium text-right ml-2">{result.externalQuality.texture}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-muted-foreground">Size:</span>
+                        <span className="font-medium text-right ml-2">{result.externalQuality.size}</span>
+                      </div>
+                      <div className="flex justify-between pt-2 border-t">
+                        <span className="text-muted-foreground font-medium">Appearance:</span>
+                        <span className="font-bold text-primary">{result.externalQuality.appearance}</span>
+                      </div>
                     </div>
                   </div>
 
-                  <div className="space-y-3">
-                    <div className="flex justify-between">
-                      <span className="text-sm font-medium">Defects</span>
-                      <span className="text-sm text-muted-foreground">{result.defects}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-sm font-medium">Ripeness</span>
-                      <span className="text-sm text-muted-foreground">{result.ripeness}</span>
+                  {/* Internal Quality Detection */}
+                  <div className="p-4 rounded-lg border border-border">
+                    <div className="text-sm font-semibold mb-3">Internal Quality Detection</div>
+                    <div className="space-y-2 text-xs">
+                      <div className="flex justify-between">
+                        <span className="text-muted-foreground">Firmness:</span>
+                        <span className="font-medium text-right ml-2">{result.internalQuality.firmness}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-muted-foreground">Sugar Content:</span>
+                        <span className="font-medium text-right ml-2">{result.internalQuality.sugarContent}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-muted-foreground">Moisture:</span>
+                        <span className="font-medium text-right ml-2">{result.internalQuality.moisture}</span>
+                      </div>
+                      <div className="flex justify-between pt-2 border-t">
+                        <span className="text-muted-foreground font-medium">Freshness:</span>
+                        <span className="font-bold text-primary">{result.internalQuality.freshness}</span>
+                      </div>
                     </div>
                   </div>
 
-                  <div className="p-4 rounded-lg bg-secondary/10 border border-secondary/20 mt-4">
-                    <div className="text-sm font-medium mb-1">Recommendation</div>
-                    <div className="text-sm text-muted-foreground">{result.recommendation}</div>
+                  {/* Overall Assessment */}
+                  <div className="p-4 rounded-lg bg-muted border border-border">
+                    <div className="text-sm font-semibold mb-2">Overall Assessment</div>
+                    <div className="space-y-2 text-xs">
+                      <div className="flex justify-between">
+                        <span className="text-muted-foreground">Quality Grade:</span>
+                        <span className="font-medium">{result.quality}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-muted-foreground">Ripeness:</span>
+                        <span className="font-medium">{result.ripeness}</span>
+                      </div>
+                      <div className="pt-2 border-t">
+                        <div className="text-muted-foreground mb-1">Recommendation:</div>
+                        <div className="text-xs">{result.recommendation}</div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               ) : (
