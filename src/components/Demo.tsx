@@ -53,19 +53,9 @@ export const Demo = () => {
         quality: data.quality,
         ripeness: data.ripeness,
         consumptionDays: parseInt(data.shelfLife.match(/\d+/)?.[0] || "3"),
-        externalQuality: {
-          color: "Analyzed from image",
-          texture: "AI detected",
-          size: "Standard",
-          appearance: data.quality
-        },
-        internalQuality: {
-          firmness: "AI estimated",
-          sugarContent: "Based on ripeness",
-          moisture: "Normal range",
-          freshness: data.quality
-        },
-        ripeningTime: `Current ripeness: ${data.ripeness}`,
+        externalQuality: data.externalQuality,
+        internalQuality: data.internalQuality,
+        ripeningTime: data.ripeningTime,
         recommendation: data.recommendations.join(". ")
       });
 

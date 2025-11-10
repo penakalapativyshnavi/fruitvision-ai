@@ -41,17 +41,32 @@ serve(async (req) => {
   "quality": "Excellent/Good/Fair/Poor",
   "ripeness": "percentage as string like '75%'",
   "shelfLife": "estimated days like '3-5 days'",
+  "externalQuality": {
+    "color": "specific color description",
+    "texture": "smooth/rough/bumpy description",
+    "size": "small/medium/large",
+    "appearance": "overall appearance rating"
+  },
+  "internalQuality": {
+    "firmness": "firm/soft/very soft",
+    "sugarContent": "estimated brix or sweetness level",
+    "moisture": "juicy/dry/adequate",
+    "freshness": "very fresh/fresh/aging"
+  },
+  "ripeningTime": "specific timing guidance like 'Ready to eat now' or 'Ripen for 2 more days'",
   "recommendations": ["recommendation 1", "recommendation 2", "recommendation 3"]
 }
 
-Consider factors like:
-- Color and appearance
+Analyze the fruit based on visible characteristics:
+- Color uniformity and vibrancy
+- Surface texture and skin condition
+- Any blemishes, spots, or damage
+- Shape and size
 - Signs of ripeness or overripeness
-- Any visible damage or spots
-- Texture indicators
-- Optimal consumption timing
+- Estimated firmness from appearance
+- Likely sweetness based on appearance
 
-Be specific to the actual fruit in the image.`
+Provide specific, accurate descriptions for each field based on what you can see in the image.`
               },
               {
                 type: 'image_url',
