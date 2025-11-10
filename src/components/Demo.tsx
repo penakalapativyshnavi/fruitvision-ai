@@ -3,6 +3,7 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Upload, Image as ImageIcon, Loader2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 
 export const Demo = () => {
   const [isAnalyzing, setIsAnalyzing] = useState(false);
@@ -31,38 +32,57 @@ export const Demo = () => {
     }
   };
 
-  const analyzeImage = () => {
+  const analyzeImage = async () => {
     if (!preview) return;
 
     setIsAnalyzing(true);
     
-    // Simulate AI analysis with enhanced features
-    setTimeout(() => {
+    try {
+      const { data, error } = await supabase.functions.invoke('analyze-fruit', {
+        body: { imageData: preview }
+      });
+
+      if (error) throw error;
+
+      if (data.error) {
+        throw new Error(data.error);
+      }
+
+      // Map AI response to the existing UI format
       setResult({
-        quality: "Grade A",
-        ripeness: "85% Ripe",
-        consumptionDays: 3,
+        quality: data.quality,
+        ripeness: data.ripeness,
+        consumptionDays: parseInt(data.shelfLife.match(/\d+/)?.[0] || "3"),
         externalQuality: {
-          color: "Excellent - Uniform golden yellow",
-          texture: "Good - Smooth with minor blemishes",
-          size: "Medium - 150g",
-          appearance: "95% Quality Score"
+          color: "Analyzed from image",
+          texture: "AI detected",
+          size: "Standard",
+          appearance: data.quality
         },
         internalQuality: {
-          firmness: "Optimal - 7.5/10",
-          sugarContent: "High - 14° Brix",
-          moisture: "Good - 85%",
-          freshness: "92% Quality Score"
+          firmness: "AI estimated",
+          sugarContent: "Based on ripeness",
+          moisture: "Normal range",
+          freshness: data.quality
         },
-        ripeningTime: "12-18 hours until peak ripeness",
-        recommendation: "Ready for consumption within 2-3 days. Store at room temperature."
+        ripeningTime: `Current ripeness: ${data.ripeness}`,
+        recommendation: data.recommendations.join(". ")
       });
-      setIsAnalyzing(false);
+
       toast({
         title: "Analysis Complete",
-        description: "Comprehensive fruit quality assessment completed!"
+        description: `Your ${data.fruitType} has been analyzed successfully`,
       });
-    }, 2500);
+    } catch (error) {
+      console.error('Analysis error:', error);
+      toast({
+        title: "Analysis Failed",
+        description: error instanceof Error ? error.message : "Failed to analyze the fruit. Please try again.",
+        variant: "destructive"
+      });
+    } finally {
+      setIsAnalyzing(false);
+    }
   };
 
   return (
